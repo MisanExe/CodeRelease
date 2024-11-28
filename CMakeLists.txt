@@ -6,4 +6,7 @@ project (CodeRelease
          LANGUAGES C CXX
         )
 
-add_executable(CodeRelease_1-0-0 src/main.cpp)
+
+add_executable(CodeRelease src/main.cpp src/config.cpp)
+
+target_include_directories(CodeRelease PRIVATE ${PROJECT_SOURCE_DIR}/include)
