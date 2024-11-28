@@ -4,6 +4,7 @@
 #include <iostream>
 #include <functional>
 #include <algorithm>
+#include <vector>
 
 namespace CodeReleaseNS{
 
@@ -20,6 +21,11 @@ namespace CodeReleaseNS{
         bool EnterCodeDir();
         bool Set_SrcDir();
         bool Set_BinDir();
+
+        struct ConfigMeta{
+            std::string src_dir;
+            std::string bin_dir; 
+        };
     }
     
 
@@ -33,10 +39,13 @@ namespace CodeReleaseNS{
             void Run_init();
 
         private :
+
+            std::vector<config::ConfigMeta> _Metas;
             //SandBox
-            bool Sandbox(std::function<bool(void)> callback);
-            
-            std::string currentDir;
+            bool _Sandbox(std::function<bool(void)> callback);
+            std::string _currentDir;
+
+            bool WriteConfig(std::vector<config::ConfigMeta> metas);
             
 
     };

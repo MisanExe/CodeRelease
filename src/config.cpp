@@ -1,12 +1,13 @@
 //Configuration code
 #include "../include/config.h"
 #include <filesystem>
+#include <fstream>
 
 using namespace CodeReleaseNS;
 using namespace CodeReleaseNS::config;
 
 ConfigBot::ConfigBot(){
-    this->currentDir = GetCurrent_Dir();
+    this->_currentDir = GetCurrent_Dir();
 }
 
 /**
@@ -14,7 +15,7 @@ ConfigBot::ConfigBot(){
  * @param :
  * @return :
  */
-bool ConfigBot::Sandbox(std::function<bool(void)> callback){
+bool ConfigBot::_Sandbox(std::function<bool(void)> callback){
 
     int count = 0;
     bool ret = false;
@@ -113,7 +114,7 @@ void ConfigBot::Run_init(){
         case 0:
             config = IS_CODE_DIR;
         case 1: //Request code directory
-            if (this->Sandbox(config::RequestCodeDir)){
+            if (this->_Sandbox(config::RequestCodeDir)){
                 //proceed
                 config = SET_SRC_DIR;
             }else{
@@ -122,7 +123,7 @@ void ConfigBot::Run_init(){
             }
 
         case 2: //Enter name of source directory
-            if (this->Sandbox(config::Set_SrcDir)){
+            if (this->_Sandbox(config::Set_SrcDir)){
                 //proceed
                 config = SET_BIN_DIR;
             }else{
@@ -130,7 +131,7 @@ void ConfigBot::Run_init(){
                 break;
             }
         case 3:
-            if (this->Sandbox(config::Set_BinDir)){
+            if (this->_Sandbox(config::Set_BinDir)){
 
             }else{
                 std::cout<<"Something sup"<<std::endl;
@@ -159,4 +160,9 @@ bool CodeReleaseNS::Dir_IsExist(std::string dir){
 std::string CodeReleaseNS::GetCurrent_Dir(){
     std::filesystem::path cwd = std::filesystem::current_path();
     return cwd.string();
+}
+
+bool ConfigBot::WriteConfig(std::vector<config::ConfigMeta> metas){
+
+
 }
