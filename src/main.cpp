@@ -19,7 +19,7 @@ struct Data{
 
 int main(int args, char **argv){
 
-	
+	//added commtents lol
 
 	CodeReleaseNS::ConfigBot bot = CodeReleaseNS::ConfigBot();
 	bot.Run_init();
