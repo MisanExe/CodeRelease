@@ -1,0 +1,90 @@
+# Ignore build directories
+/build/
+/bin/
+/obj/
+/out/
+
+# Ignore C++ compiled object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Ignore compiled dynamic/shared object files
+*.so
+*.dylib
+*.dll
+
+# Ignore compiled static libraries
+*.a
+*.lib
+
+# Ignore executables
+*.exe
+*.out
+*.app
+
+# Ignore C++ debugging files
+*.gch
+*.pch
+*.pdb
+*.ilk
+*.dSYM/
+
+# Ignore dependency files
+*.d
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+*.bak
+*.swp
+*.swo
+*.swn
+
+# Ignore IDE/project files
+.vscode/
+*.code-workspace
+*.idea/
+*.iml
+*.cbp  # Code::Blocks
+*.cproject  # Eclipse C/C++ IDE
+*.project
+*.sln  # Visual Studio
+*.vcxproj
+*.vcxproj.user
+*.ncb
+*.user
+*.moc  # Qt Creator
+*.qmake.stash
+*.qmake.cache
+
+# Ignore version control system files
+*.orig
+*.rej
+*.diff
+
+# Ignore CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Ignore other build systems
+*.mk
+*.make
+
+# Ignore package managers
+conanbuildinfo.txt
+conanbuildinfo.cmake
+conanbuildinfo.json
+conan.lock
+vcpkg_installed/
+build.ninja
+.ninja_deps
+.ninja_log
+
+# Ignore custom user files
+*.userprefs
