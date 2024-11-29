@@ -23,6 +23,7 @@ int main(int args, char **argv){
 
 	CodeReleaseNS::ConfigBot bot = CodeReleaseNS::ConfigBot();
 	bot.Run_init();
+	bot.printMeta();
 
 	std::cout<<"Done!"<<std::endl;
 

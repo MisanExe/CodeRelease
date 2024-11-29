@@ -15,12 +15,12 @@ ConfigBot::ConfigBot(){
  * @param :
  * @return :
  */
-bool ConfigBot::_Sandbox(std::function<bool(void)> callback){
+bool ConfigBot::_Sandbox(config::ConfigMeta &meta, std::function<bool(config::ConfigMeta&)> callback){
 
     int count = 0;
     bool ret = false;
     do{
-        ret = callback();
+        ret = callback(meta);
         if(ret){
             count = 3;
             return ret;
@@ -36,7 +36,7 @@ bool ConfigBot::_Sandbox(std::function<bool(void)> callback){
  * @param :
  * @return :
  */
-bool config::RequestCodeDir(){
+bool config::RequestCodeDir(config::ConfigMeta &meta){
 
     std::string response;
     std::filesystem::path cwd = std::filesystem::current_path(); 
@@ -61,7 +61,7 @@ bool config::RequestCodeDir(){
  * @param :
  * @return :
  */
-bool config::Set_SrcDir(){
+bool config::Set_SrcDir(config::ConfigMeta &meta){
     std::string response;
     std::cout<<"\n";
     std::cout<<"\tPlease Enter name of source directory in your current dirctory : "<<std::endl;
@@ -71,7 +71,8 @@ bool config::Set_SrcDir(){
     //store response 
     if(response != " " || response != "\n"){
         if(Dir_IsExist(response)){
-            std::cout<<"src dir exist"<<std::endl;
+            meta.src_dir = GetCurrent_Dir()+"/"+response;
+            std::cout<<meta.src_dir<<std::endl;
             return true;
         }
         
@@ -85,7 +86,7 @@ bool config::Set_SrcDir(){
  * @param :
  * @return :
  */
- bool config::Set_BinDir(){
+ bool config::Set_BinDir(config::ConfigMeta &meta){
     std::string response;
     std::cout<<"\n";
     std::cout<<"\tPlease Enter name of bin/executable directory in your current dirctory : "<<std::endl;
@@ -94,7 +95,8 @@ bool config::Set_SrcDir(){
 
     if(response != " " || response != "\n"){
         if(Dir_IsExist(response)){
-            std::cout<<"bin dir exist"<<std::endl;
+            meta.bin_dir = GetCurrent_Dir()+"/"+response;
+            std::cout<<meta.bin_dir<<std::endl;
             return true;
         }
         
@@ -107,14 +109,14 @@ bool config::Set_SrcDir(){
 void ConfigBot::Run_init(){
    
 
-    CodeReleaseNS::config::ConfigState config = CodeReleaseNS::config::ConfigState::NONE;
+    config::ConfigState config = NONE;
 
     switch(config){
 
         case 0:
             config = IS_CODE_DIR;
         case 1: //Request code directory
-            if (this->_Sandbox(config::RequestCodeDir)){
+            if (this->_Sandbox(this->_meta, RequestCodeDir)){
                 //proceed
                 config = SET_SRC_DIR;
             }else{
@@ -123,18 +125,20 @@ void ConfigBot::Run_init(){
             }
 
         case 2: //Enter name of source directory
-            if (this->_Sandbox(config::Set_SrcDir)){
+            if (this->_Sandbox(this->_meta, Set_SrcDir)){
                 //proceed
                 config = SET_BIN_DIR;
             }else{
                 std::cout<<"Something sup"<<std::endl;
+                this->_clearMeta();
                 break;
             }
         case 3:
-            if (this->_Sandbox(config::Set_BinDir)){
+            if (this->_Sandbox(this->_meta, Set_BinDir)){
 
             }else{
                 std::cout<<"Something sup"<<std::endl;
+                this->_clearMeta();
                 break;
             }
             
@@ -162,7 +166,25 @@ std::string CodeReleaseNS::GetCurrent_Dir(){
     return cwd.string();
 }
 
-bool ConfigBot::WriteConfig(std::vector<config::ConfigMeta> metas){
+bool ConfigBot::WriteConfig(){
+    
+    //remember to add try
+    //open file as binary
+    std::ofstream configFile ("config.bin", std::ofstream::binary | std::ofstream::app);
+    
+    if(!configFile.is_open()){
+        return false;
+    }
+    //write binary in 
+    configFile.write(reinterpret_cast<char*>(&this->_meta), sizeof(this->_meta));
+    if(!configFile.fail()){
+        return true;
+    }
+    return false;
 
+}
 
+void ConfigBot::_clearMeta(){
+    this->_meta.bin_dir.clear();
+    this->_meta.src_dir.clear();
 }

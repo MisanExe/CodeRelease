@@ -17,15 +17,17 @@ namespace CodeReleaseNS{
             SET_BIN_DIR
         };
 
-        bool RequestCodeDir();
-        bool EnterCodeDir();
-        bool Set_SrcDir();
-        bool Set_BinDir();
-
+        
         struct ConfigMeta{
             std::string src_dir;
             std::string bin_dir; 
         };
+
+        bool RequestCodeDir(ConfigMeta &meta);
+        bool EnterCodeDir(ConfigMeta &meta);
+        bool Set_SrcDir(ConfigMeta &meta);
+        bool Set_BinDir(ConfigMeta &meta);
+
     }
     
 
@@ -38,15 +40,20 @@ namespace CodeReleaseNS{
             //Run
             void Run_init();
 
+            void printMeta(){
+                std::cout<<"Meta Data contains : "<<std::endl;
+                std::cout<<"Source file : "<<this->_meta.src_dir<<std::endl;
+                std::cout<<"Binary/Executable file : "<<this->_meta.bin_dir<<std::endl;
+            }
+
         private :
 
-            std::vector<config::ConfigMeta> _Metas;
+            config::ConfigMeta _meta;
             //SandBox
-            bool _Sandbox(std::function<bool(void)> callback);
+            bool _Sandbox(config::ConfigMeta &meta, std::function<bool(config::ConfigMeta&)> callback);
             std::string _currentDir;
-
-            bool WriteConfig(std::vector<config::ConfigMeta> metas);
-            
+            bool WriteConfig();     
+            void _clearMeta();       
 
     };
 
